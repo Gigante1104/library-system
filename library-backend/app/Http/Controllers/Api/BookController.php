@@ -40,7 +40,6 @@ class BookController extends Controller
             'title'        => 'sometimes|required|string|max:255',
             'author'       => 'sometimes|required|string|max:255',
             'genre'        => 'sometimes|required|string|max:100',
-            'is_available' => 'sometimes|boolean',
         ]);
 
         $book->update($validated);
