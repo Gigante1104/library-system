@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
 
 /**
  * @extends Factory<Member>
@@ -23,7 +25,7 @@ class MemberFactory extends Factory
 
         return [
             'name'  => "{$firstName} {$lastName} {$secondLastName}",
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => Str::slug("{$firstName} {$lastName}", '.') . $this->faker->unique()->numberBetween(1, 9999) . '@example.com',
             'phone' => $this->faker->optional()->numerify('3#########'),
         ];
     }
