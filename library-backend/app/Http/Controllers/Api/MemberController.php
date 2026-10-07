@@ -12,8 +12,15 @@ class MemberController extends Controller
 {
     public function index()
     {
-        // withCount agrega el campo loans_count sin cargar todos los préstamos
-        return response()->json(Member::withCount('loans')->orderBy('name')->get(), 200);
+        // withCount agrega contadores sin cargar todos los préstamos:
+        // loans_count (histórico), active_loans_count y overdue_loans_count (reutiliza los scopes de Loan)
+        $members = Member::withCount([
+            'loans',
+            'loans as active_loans_count'  => fn ($query) => $query->active(),
+            'loans as overdue_loans_count' => fn ($query) => $query->overdue(),
+        ])->orderBy('name')->get();
+
+        return response()->json($members, 200);
     }
 
     public function store(StoreMemberRequest $request)
