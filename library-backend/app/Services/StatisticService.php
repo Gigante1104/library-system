@@ -74,8 +74,8 @@ class StatisticService
     {
         // select() va antes de withCount(); si no, withCount agrega todas las columnas (SELECT *)
         return Book::select(['id', 'title', 'author', 'genre'])
+            ->whereHas('loans')
             ->withCount('loans')
-            ->having('loans_count', '>', 0)
             ->orderByDesc('loans_count')
             ->limit(self::TOP_LIMIT)
             ->get();
@@ -87,8 +87,8 @@ class StatisticService
     private function topMembers(): Collection
     {
         return Member::select(['id', 'name', 'email'])
+            ->whereHas('loans')
             ->withCount('loans')
-            ->having('loans_count', '>', 0)
             ->orderByDesc('loans_count')
             ->limit(self::TOP_LIMIT)
             ->get();
