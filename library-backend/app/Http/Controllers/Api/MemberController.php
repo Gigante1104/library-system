@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Exceptions\BusinessRuleException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Member;
 
 class MemberController extends Controller
@@ -15,15 +16,9 @@ class MemberController extends Controller
         return response()->json(Member::withCount('loans')->orderBy('name')->get(), 200);
     }
 
-    public function store(Request $request)
+    public function store(StoreMemberRequest $request)
     {
-        $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:members,email',
-            'phone' => 'nullable|string|max:20',
-        ]);
-
-        $member = Member::create($validated);
+        $member = Member::create($request->validated());
 
         return response()->json([
             'message' => 'Lector registrado exitosamente',
@@ -36,16 +31,9 @@ class MemberController extends Controller
         return response()->json($member->load('loans.book'), 200);
     }
 
-    public function update(Request $request, Member $member)
+    public function update(UpdateMemberRequest $request, Member $member)
     {
-        $validated = $request->validate([
-            'name'  => 'sometimes|required|string|max:255',
-            // ignore(): al editar, el correo actual del propio lector no cuenta como duplicado
-            'email' => ['sometimes', 'required', 'email', 'max:255', Rule::unique('members', 'email')->ignore($member->id)],
-            'phone' => 'nullable|string|max:20',
-        ]);
-
-        $member->update($validated);
+        $member->update($request->validated());
 
         return response()->json([
             'message' => 'Lector actualizado exitosamente',
@@ -56,9 +44,7 @@ class MemberController extends Controller
     public function destroy(Member $member)
     {
         if ($member->loans()->exists()) {
-            return response()->json([
-                'message' => 'No se puede eliminar un lector con préstamos registrados.'
-            ], 409);
+            throw new BusinessRuleException('No se puede eliminar un lector con préstamos registrados.');
         }
 
         $member->delete();
