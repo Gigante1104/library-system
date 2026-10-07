@@ -1,0 +1,7 @@
+# Material de la prueba técnica (no se publica)
+*.pdf
+
+# Sistema operativo / editores
+Thumbs.db
+.DS_Store
+.vscode/
