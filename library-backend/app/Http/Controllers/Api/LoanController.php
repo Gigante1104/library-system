@@ -12,17 +12,16 @@ class LoanController extends Controller
 {
     public function index()
     {
-        // Traemos los préstamos junto con los datos del libro asociado
-        return response()->json(Loan::with('book')->latest()->get(), 200);
+        // Traemos los préstamos junto con los datos del libro y del lector asociados
+        return response()->json(Loan::with(['book', 'member'])->latest()->get(), 200);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'book_id'    => 'required|exists:books,id',
-            'user_name'  => 'required|string|max:255',
-            'user_email' => 'required|email|max:255',
-            'due_date'   => 'required|date|after_or_equal:today',
+            'book_id'   => 'required|exists:books,id',
+            'member_id' => 'required|exists:members,id',
+            'due_date'  => 'required|date|after_or_equal:today',
         ]);
 
         $book = Book::findOrFail($validated['book_id']);
@@ -36,12 +35,11 @@ class LoanController extends Controller
 
         // Crear préstamo
         $loan = Loan::create([
-            'book_id'    => $book->id,
-            'user_name'  => $validated['user_name'],
-            'user_email' => $validated['user_email'],
-            'loan_date'  => Carbon::now()->toDateString(),
-            'due_date'   => $validated['due_date'],
-            'status'     => 'ACTIVE',
+            'book_id'   => $book->id,
+            'member_id' => $validated['member_id'],
+            'loan_date' => Carbon::now()->toDateString(),
+            'due_date'  => $validated['due_date'],
+            'status'    => 'ACTIVE',
         ]);
 
         // Cambiar estado del libro a no disponible
@@ -49,7 +47,7 @@ class LoanController extends Controller
 
         return response()->json([
             'message' => 'Préstamo registrado exitosamente',
-            'data'    => $loan->load('book')
+            'data'    => $loan->load(['book', 'member'])
         ], 201);
     }
 
