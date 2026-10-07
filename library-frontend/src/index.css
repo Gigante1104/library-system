@@ -314,6 +314,27 @@ h3 {
   color: var(--color-success);
 }
 
+/* Notificación flotante: visible sin importar el scroll */
+.toast-region {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  left: 1rem;
+  z-index: 50;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.toast-region .alert {
+  pointer-events: auto;
+  margin: 0;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  border: 1px solid currentColor;
+}
+
 .alert__close {
   background: none;
   border: none;
@@ -353,6 +374,33 @@ h3 {
   flex-wrap: wrap;
   gap: 0.4rem;
   justify-content: flex-end;
+}
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.sort-button:hover {
+  color: var(--color-primary);
+}
+
+.sort-button__icon {
+  font-size: 0.7rem;
+}
+
+th[aria-sort='ascending'] .sort-button,
+th[aria-sort='descending'] .sort-button {
+  color: var(--color-primary);
 }
 
 /* En móvil cada fila se muestra como una tarjeta (usa data-label en cada celda) */

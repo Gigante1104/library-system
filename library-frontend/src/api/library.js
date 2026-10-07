@@ -8,6 +8,10 @@ export const booksApi = {
   remove: (id) => api.delete(`/books/${id}`),
 }
 
+export const genresApi = {
+  list: () => api.get('/genres'),
+}
+
 export const membersApi = {
   list: () => api.get('/members'),
   create: (member) => api.post('/members', member),
