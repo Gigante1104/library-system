@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BookFactory extends Factory
 {
-    public const GENRES = ['Novela', 'Ciencia ficción', 'Fantasía', 'Historia', 'Ciencia', 'Poesía', 'Infantil'];
-
     /**
      * Define the model's default state.
      *
@@ -22,7 +20,7 @@ class BookFactory extends Factory
         return [
             'title'        => rtrim(fake()->sentence(3), '.'),
             'author'       => fake()->name(),
-            'genre'        => fake()->randomElement(self::GENRES),
+            'genre'        => fake()->randomElement(Book::GENRES),
             'is_available' => true,
         ];
     }

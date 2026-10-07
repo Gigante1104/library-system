@@ -47,6 +47,25 @@ class BookApiTest extends TestCase
             ->assertJsonValidationErrors(['title', 'author', 'genre']);
     }
 
+    public function test_it_lists_the_genre_catalog(): void
+    {
+        $this->getJson('/api/genres')
+            ->assertOk()
+            ->assertJson(Book::GENRES);
+    }
+
+    public function test_genre_must_belong_to_the_catalog(): void
+    {
+        $response = $this->postJson('/api/books', [
+            'title'  => 'Libro',
+            'author' => 'Autor',
+            'genre'  => 'novelas',
+        ]);
+
+        $response->assertUnprocessable()
+            ->assertJsonPath('errors.genre.0', 'El género seleccionado no es válido.');
+    }
+
     public function test_it_updates_a_book(): void
     {
         $book = Book::factory()->create(['title' => 'Título viejo']);

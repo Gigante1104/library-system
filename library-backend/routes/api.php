@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\StatisticController;
 
 // Rutas CRUD de libros
+Route::get('genres', [BookController::class, 'genres']);
 Route::apiResource('books', BookController::class);
 
 // Rutas CRUD de lectores

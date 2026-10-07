@@ -25,6 +25,14 @@ class BookController extends Controller
         ], 201);
     }
 
+    /**
+     * Catálogo de géneros permitidos (lo usa el formulario del frontend).
+     */
+    public function genres()
+    {
+        return response()->json(Book::GENRES, 200);
+    }
+
     public function show(Book $book)
     {
         return response()->json($book, 200);

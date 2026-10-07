@@ -9,6 +9,25 @@ class Book extends Model
 {
     use HasFactory;
 
+    // Catálogo cerrado: evita géneros duplicados ("Novela" / "novela") que distorsionan las estadísticas
+    public const GENRES = [
+        'Biografía',
+        'Ciencia',
+        'Ciencia ficción',
+        'Cuento',
+        'Fantasía',
+        'Filosofía',
+        'Historia',
+        'Infantil',
+        'Juvenil',
+        'Misterio',
+        'Novela',
+        'Poesía',
+        'Teatro',
+        'Terror',
+        'Otro',
+    ];
+
     protected $fillable = [
         'title',
         'author',
