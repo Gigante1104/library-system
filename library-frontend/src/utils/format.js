@@ -19,6 +19,16 @@ export function dateFromToday(days = 0) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 }
 
+/**
+ * Estado visible de un préstamo. "Vencido" no se guarda en la BD:
+ * lo calcula el backend (is_overdue) a partir de la fecha límite.
+ */
+export function loanStatus(loan) {
+  if (loan.status === 'RETURNED') return { key: 'returned', label: 'Devuelto', badge: 'badge--info' }
+  if (loan.is_overdue) return { key: 'overdue', label: 'Vencido', badge: 'badge--danger' }
+  return { key: 'active', label: 'Activo', badge: 'badge--success' }
+}
+
 /** Toma el primer mensaje de cada campo de un error 422 de Laravel. */
 export function firstErrors(errors = {}) {
   return Object.fromEntries(Object.entries(errors).map(([field, messages]) => [field, messages[0]]))

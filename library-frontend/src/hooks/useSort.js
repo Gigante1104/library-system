@@ -18,8 +18,8 @@ const NO_ACCESSORS = {}
  * accessors permite ordenar por datos anidados, ej. { book: (loan) => loan.book.title }
  * (defínelo fuera del componente para que no cambie en cada render).
  */
-export function useSort(items, initialKey, accessors = NO_ACCESSORS) {
-  const [sort, setSort] = useState({ key: initialKey, direction: 'asc' })
+export function useSort(items, initialKey, accessors = NO_ACCESSORS, initialDirection = 'asc') {
+  const [sort, setSort] = useState({ key: initialKey, direction: initialDirection })
 
   const sorted = useMemo(() => {
     const getValue = accessors[sort.key] ?? ((item) => item[sort.key])
