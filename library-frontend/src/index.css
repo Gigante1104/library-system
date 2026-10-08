@@ -55,7 +55,9 @@ h3 {
   top: 0;
   background: var(--color-primary);
   color: #fff;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 0 0 var(--radius) 0;
   z-index: 100;
 }
 
@@ -433,6 +435,13 @@ th[aria-sort='descending'] .sort-button {
     font-weight: 600;
     color: var(--color-muted);
     text-align: left;
+    flex-shrink: 0; /* La etiqueta no se encoge; el valor ocupa el espacio restante */
+  }
+
+  /* Textos largos sin espacios (correos) se parten en vez de salirse de la pantalla */
+  .table td {
+    overflow-wrap: anywhere;
+    min-width: 0;
   }
 
   .table__actions {
@@ -524,11 +533,10 @@ th[aria-sort='descending'] .sort-button {
   border-radius: 999px;
 }
 
+/* Gráfico de columnas: una sola serie, un solo color; la línea base es el borde inferior */
 .column-chart {
   display: flex;
-  align-items: flex-end;
   gap: 0.5rem;
-  height: 200px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -539,24 +547,81 @@ th[aria-sort='descending'] .sort-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-  gap: 0.3rem;
-  font-size: 0.8rem;
-  color: var(--color-muted);
+  gap: 0.4rem;
+}
+
+.column-chart__plot {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .column-chart__bar {
   width: 100%;
-  max-width: 48px;
-  background: var(--color-primary);
-  border-radius: 6px 6px 0 0;
+  max-width: 40px;
   min-height: 2px;
+  background: var(--color-primary);
+  border-radius: 4px 4px 0 0;
 }
 
-.column-chart__value {
-  font-weight: 700;
-  color: var(--color-text);
+.column-chart__item:hover .column-chart__bar {
+  background: var(--color-primary-dark);
+}
+
+/* Tooltip: aparece al pasar el mouse sobre la columna */
+.column-chart__tooltip {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  background: var(--color-text);
+  color: #fff;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.column-chart__item:hover .column-chart__tooltip {
+  opacity: 1;
+}
+
+.column-chart__label {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  text-transform: capitalize;
+}
+
+.chart-table {
+  margin-top: 1rem;
+}
+
+.chart-table summary {
+  cursor: pointer;
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.card__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card__header h2 {
+  font-size: 1.1rem;
+  margin: 0;
 }
 
 /* ============ Estados vacíos / carga ============ */
