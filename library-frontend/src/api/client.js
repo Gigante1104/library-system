@@ -3,6 +3,11 @@
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 
+const CONNECTION_ERROR = 'No se pudo conectar con el servidor. Verifica que la API esté en ejecución.'
+
+// 502/503/504: un intermediario (ej. el proxy de Vite) no pudo comunicarse con Laravel
+const UNAVAILABLE_STATUSES = [502, 503, 504]
+
 /**
  * Error con la información que devuelve Laravel:
  * - status: código HTTP (422 validación, 409 regla de negocio, 404, 500...)
@@ -31,7 +36,11 @@ async function request(method, path, body) {
     })
   } catch {
     // fetch solo falla aquí si no hay conexión (servidor apagado, sin red)
-    throw new ApiError('No se pudo conectar con el servidor. Verifica que la API esté en ejecución.')
+    throw new ApiError(CONNECTION_ERROR)
+  }
+
+  if (UNAVAILABLE_STATUSES.includes(response.status)) {
+    throw new ApiError(CONNECTION_ERROR, response.status)
   }
 
   const data = await response.json().catch(() => null)
