@@ -51,7 +51,7 @@ class MemberController extends Controller
     public function destroy(Member $member)
     {
         if ($member->loans()->exists()) {
-            throw new BusinessRuleException('No se puede eliminar un lector con préstamos registrados.');
+            throw new BusinessRuleException('No se puede eliminar un lector con historial de préstamos.');
         }
 
         $member->delete();
