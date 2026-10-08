@@ -21,6 +21,23 @@ class MemberApiTest extends TestCase
         $response->assertCreated()->assertJsonPath('data.email', 'ana@example.com');
     }
 
+    public function test_it_lists_members_with_loan_counters(): void
+    {
+        $member = Member::factory()->create();
+        Loan::factory()->returned()->for($member)->create();
+        Loan::factory()->for($member)->create();
+        Loan::factory()->overdue()->for($member)->create();
+
+        $response = $this->getJson('/api/members');
+
+        $response->assertOk()->assertJson([[
+            'id'                  => $member->id,
+            'loans_count'         => 3,
+            'active_loans_count'  => 2,
+            'overdue_loans_count' => 1,
+        ]]);
+    }
+
     public function test_email_must_be_unique(): void
     {
         Member::factory()->create(['email' => 'ana@example.com']);

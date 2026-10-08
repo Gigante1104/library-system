@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Book;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBookRequest extends FormRequest
 {
@@ -27,7 +29,7 @@ class UpdateBookRequest extends FormRequest
         return [
             'title'  => 'sometimes|required|string|max:255',
             'author' => 'sometimes|required|string|max:255',
-            'genre'  => 'sometimes|required|string|max:100',
+            'genre'  => ['sometimes', 'required', Rule::in(Book::GENRES)],
         ];
     }
 }

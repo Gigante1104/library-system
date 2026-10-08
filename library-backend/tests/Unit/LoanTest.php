@@ -35,7 +35,7 @@ class LoanTest extends TestCase
     {
         $loan = new Loan([
             'status'   => Loan::STATUS_RETURNED,
-            'due_date' => today()->subDay(5),
+            'due_date' => today()->subDays(5),
         ]);
 
         $this->assertFalse($loan->is_overdue);
