@@ -51,7 +51,7 @@ Aplicación web para gestionar una biblioteca: catálogo de libros, registro de 
 |---|---|
 | Libros, % de disponibilidad, préstamos activos y vencidos | ¿Cómo está la biblioteca hoy? |
 | % de devoluciones a tiempo | ¿Los lectores cumplen los plazos? |
-| Top géneros y libros más prestados | ¿Qué le gusta a los lectores comprar? |
+| Top géneros y libros más prestados | ¿Qué le gusta leer a los lectores? |
 | Lectores más activos | ¿Quiénes usan más la biblioteca? |
 | Préstamos por mes (últimos 6) | ¿El uso está creciendo? |
 
@@ -223,7 +223,7 @@ Content-Type: application/json
 
 ## Mejoras futuras
 
-Limitaciones identificadas que quedaron fuera del alcance de esta prueba:
+Limitaciones identificadas que quedaron fuera del alcance de este proyecto:
 
 | Mejora | Motivo | Enfoque propuesto |
 |---|---|---|
